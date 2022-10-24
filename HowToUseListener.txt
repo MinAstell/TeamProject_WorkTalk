@@ -1,0 +1,157 @@
+<<<<<<< HEAD
+
+-   addListenerForSingleValueEvent 사용형식 
+
+    *  아래 mDatabase같은 경우 클래스 필드변수에 미리 세팅해놨음.
+
+	
+	mDatabase.child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        String myProfileImage = snapshot.child("profileImageUrl").getValue().toString();
+                        String myConditionMessage = snapshot.child("conditionMessage").getValue().toString();
+                        String myName = snapshot.child("userName").getValue().toString();
+
+                        tv_userName.setText(myName);
+                        et_modifyConditionMessage.setText(myConditionMessage);
+
+                        if(!myProfileImage.equals("false")) {
+
+                            Glide.with(getApplication()).load(myProfileImage).apply(new RequestOptions().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop()).into(iv_uploadProfile);
+                        }
+
+                        if(myProfileImage.equals("false")) {
+
+                            Glide.with(getApplication()).load(R.drawable.profile_simple).apply(new RequestOptions().circleCrop()).into(iv_uploadProfile);
+                        }
+
+                        modify_profile.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
+
+-   addValueEventListener 사용형식 
+
+     *  아래 valueEventListener같은 경우 클래스 필드변수로 미리 세팅 해놨음.
+
+
+	valueEventListener = mDatabase.child("chatRoom").child(chatRoomPath).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.getChildrenCount() > 0) {
+
+                    getLead();
+
+                    arrayList.clear();
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                        ChatTestRoom_Data2.Comment comment = snapshot.getValue(ChatTestRoom_Data2.Comment.class);
+
+                        if (!comment.createBy.equals(myName) && !comment.createBy.equals(friendName)) {
+                            arrayList.add(comment);
+                        }
+                    }
+
+                    mAdapter = new ChatRoomTest_Adapter(arrayList, getApplication(), myName);
+                    recyclerView.setAdapter(mAdapter);
+
+                    recyclerView.scrollToPosition(arrayList.size() - 1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+=======
+
+-   addListenerForSingleValueEvent 사용형식 
+
+    *  아래 mDatabase같은 경우 클래스 필드변수에 미리 세팅해놨음.
+
+	
+	mDatabase.child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        String myProfileImage = snapshot.child("profileImageUrl").getValue().toString();
+                        String myConditionMessage = snapshot.child("conditionMessage").getValue().toString();
+                        String myName = snapshot.child("userName").getValue().toString();
+
+                        tv_userName.setText(myName);
+                        et_modifyConditionMessage.setText(myConditionMessage);
+
+                        if(!myProfileImage.equals("false")) {
+
+                            Glide.with(getApplication()).load(myProfileImage).apply(new RequestOptions().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop()).into(iv_uploadProfile);
+                        }
+
+                        if(myProfileImage.equals("false")) {
+
+                            Glide.with(getApplication()).load(R.drawable.profile_simple).apply(new RequestOptions().circleCrop()).into(iv_uploadProfile);
+                        }
+
+                        modify_profile.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
+
+-   addValueEventListener 사용형식 
+
+     *  아래 valueEventListener같은 경우 클래스 필드변수로 미리 세팅 해놨음.
+
+
+	valueEventListener = mDatabase.child("chatRoom").child(chatRoomPath).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.getChildrenCount() > 0) {
+
+                    getLead();
+
+                    arrayList.clear();
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                        ChatTestRoom_Data2.Comment comment = snapshot.getValue(ChatTestRoom_Data2.Comment.class);
+
+                        if (!comment.createBy.equals(myName) && !comment.createBy.equals(friendName)) {
+                            arrayList.add(comment);
+                        }
+                    }
+
+                    mAdapter = new ChatRoomTest_Adapter(arrayList, getApplication(), myName);
+                    recyclerView.setAdapter(mAdapter);
+
+                    recyclerView.scrollToPosition(arrayList.size() - 1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+>>>>>>> 83adf013c6cafb96d634c4bea6f91786f3200c8f
