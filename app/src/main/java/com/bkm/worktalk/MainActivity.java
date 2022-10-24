@@ -20,7 +20,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     // merged test
-    // git pull test 2
+    // git pull test 3
     
     private DatabaseReference mDatabase;    // 아래 디비 접근을 위한 초기화 부분에서 쓸 예정.
     private ValueEventListener valueEventListener;    // 아래 addValueEventListener에 쓰일 예정.
