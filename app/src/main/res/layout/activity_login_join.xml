@@ -81,9 +81,9 @@
                             android:layout_height="25dp"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
+                            android:src="@drawable/btn_all_del"
                             android:text="Button"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/btn_all_del" />
+                            android:visibility="visible" />
                     </LinearLayout>
                 </FrameLayout>
 
@@ -135,9 +135,9 @@
                                 android:layout_height="25dp"
                                 android:background="@android:color/transparent"
                                 android:scaleType="fitCenter"
+                                android:src="@drawable/btn_all_del"
                                 android:text="Button"
-                                android:visibility="visible"
-                                app:srcCompat="@drawable/btn_all_del" />
+                                android:visibility="visible" />
                         </LinearLayout>
                     </FrameLayout>
                 </LinearLayout>
@@ -180,9 +180,9 @@
                                 android:layout_height="25dp"
                                 android:background="@android:color/transparent"
                                 android:scaleType="fitCenter"
+                                android:src="@drawable/btn_all_del"
                                 android:text="Button"
-                                android:visibility="visible"
-                                app:srcCompat="@drawable/btn_all_del" />
+                                android:visibility="visible" />
                         </LinearLayout>
                     </FrameLayout>
                 </LinearLayout>
@@ -230,9 +230,9 @@
                             android:layout_height="25dp"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
+                            android:src="@drawable/btn_all_del"
                             android:text="Button"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/btn_all_del" />
+                            android:visibility="visible" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
@@ -255,7 +255,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/et_number"
+                            android:id="@+id/et_emp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:ems="10"
@@ -278,9 +278,9 @@
                             android:layout_height="25dp"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
+                            android:src="@drawable/btn_all_del"
                             android:text="Button"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/btn_all_del" />
+                            android:visibility="visible" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
@@ -326,9 +326,9 @@
                             android:layout_height="25dp"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
+                            android:src="@drawable/btn_all_del"
                             android:text="Button"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/btn_all_del" />
+                            android:visibility="visible" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
@@ -373,9 +373,9 @@
                             android:layout_height="25dp"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
+                            android:src="@drawable/btn_all_del"
                             android:text="Button"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/btn_all_del" />
+                            android:visibility="visible" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
@@ -420,9 +420,9 @@
                             android:layout_height="25dp"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
+                            android:src="@drawable/btn_all_del"
                             android:text="Button"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/btn_all_del" />
+                            android:visibility="visible" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
