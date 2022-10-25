@@ -12,10 +12,12 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/joinPage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingHorizontal="10dp">
+            android:paddingHorizontal="10dp"
+            android:visibility="invisible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -453,6 +455,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/loginPage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#AFDFF9"
@@ -598,7 +601,7 @@
                     android:paddingHorizontal="5dp">
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/btn_transJoin"
                         android:layout_width="60dp"
                         android:layout_height="30dp"
                         android:background="@android:color/transparent"
@@ -615,7 +618,7 @@
                     android:paddingHorizontal="5dp">
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/btn_selAccount"
                         android:layout_width="75dp"
                         android:layout_height="30dp"
                         android:background="@android:color/transparent"
@@ -623,7 +626,7 @@
                         android:textColor="#0F265C" />
 
                     <Button
-                        android:id="@+id/button3"
+                        android:id="@+id/btn_selPw"
                         android:layout_width="80dp"
                         android:layout_height="30dp"
                         android:background="@android:color/transparent"
@@ -670,6 +673,98 @@
                 android:layout_height="0dp"
                 android:layout_weight="5"
                 android:orientation="vertical"></LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/selAccount"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <EditText
+                android:id="@+id/et_inpEmp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:ems="10"
+                android:hint="사원번호"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/btn_sendToDbFindYourAct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Button" />
+
+            <TextView
+                android:id="@+id/tv_viewId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/tv_sucFindYourId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/selPw"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <EditText
+                android:id="@+id/et_inpEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:ems="10"
+                android:hint="이메일"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/btn_sendToDbFindYourPw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:text="비밀번호 찾기" />
+
+            <LinearLayout
+                android:id="@+id/modifyPw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <EditText
+                    android:id="@+id/et_newPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="새로운 비밀번호"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/et_newRePw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="비밀번호 확인"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/btn_modifyPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="비밀번호 변경" />
+            </LinearLayout>
 
         </LinearLayout>
 
