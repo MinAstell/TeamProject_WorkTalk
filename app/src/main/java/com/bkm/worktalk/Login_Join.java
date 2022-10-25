@@ -32,7 +32,8 @@ public class Login_Join extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     EditText et_mail, et_pw, et_pw2, et_name, et_emp, et_phone, et_dept, et_job;
-    ImageButton ib_join, ib_all_dell_1, ib_all_dell_2, ib_all_dell_3, ib_all_dell_4, ib_all_dell_5, ib_all_dell_6, ib_all_dell_7, ib_all_dell_8;
+    ImageButton ib_all_dell_1, ib_all_dell_2, ib_all_dell_3, ib_all_dell_4, ib_all_dell_5, ib_all_dell_6, ib_all_dell_7, ib_all_dell_8;
+    Button btn_join;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class Login_Join extends AppCompatActivity {
         et_dept = (EditText) findViewById(R.id.et_dept);
         et_job = (EditText) findViewById(R.id.et_job);
 
-        ib_join = (ImageButton) findViewById(R.id.ib_join);
+        btn_join = (Button) findViewById(R.id.btn_join);
 
         ib_all_dell_1 = (ImageButton) findViewById(R.id.ib_all_del1);
         ib_all_dell_2 = (ImageButton) findViewById(R.id.ib_all_del2);
@@ -65,7 +66,7 @@ public class Login_Join extends AppCompatActivity {
 //        dellWatching thread = new dellWatching();
 //        thread.start();
 
-        ib_join.setOnClickListener(new View.OnClickListener() {
+        btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -117,25 +118,24 @@ public class Login_Join extends AppCompatActivity {
                 }
 
                 mAuth.createUserWithEmailAndPassword(email, rePw)
-                        .addOnCompleteListener(Login_Join.this, new OnCompleteListener<AuthResult>() {
+                    .addOnCompleteListener(Login_Join.this, new OnCompleteListener<AuthResult>() {
 
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                if (task.isSuccessful()) {
-                                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            if (task.isSuccessful()) {
+                                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                                    JoinDTO joinDTO = new JoinDTO(email, rePw, name, emp, hp, dept,job);
+                                JoinDTO joinDTO = new JoinDTO(email, rePw, name, emp, hp, dept,job);
 
-                                    mDatabase.child(uid).setValue(joinDTO);
+                                mDatabase.child(uid).setValue(joinDTO);
 //                                    thread.interrupt();
-                                    showAlert("가입이 완료되었습니다.");
-                                }
-                                else {
-                                    showAlert("가입에 실패했습니다. 다시 시도해주세요.");
-                                }
+                                showAlert("가입이 완료되었습니다.");
+                            } else {
+                                showAlert("가입에 실패했습니다. 다시 시도해주세요.");
                             }
-                        });
+                        }
+                    });
             }
         });
 
