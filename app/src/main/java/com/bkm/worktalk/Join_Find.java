@@ -131,9 +131,6 @@ public class Join_Find extends AppCompatActivity {
         selPw = (LinearLayout) findViewById(R.id.selPw);
         modifyPw = (LinearLayout) findViewById(R.id.modifyPw);
 
-//        dellWatching thread = new dellWatching();
-//        thread.start();
-
         // 액티비티가 넘어갈때 원하는 레이아웃이 뜨도록 하는 PutExtra를 받는 GetExtra
         if(text.equals("0")) {
             selAccount.setVisibility(View.INVISIBLE);
@@ -155,7 +152,7 @@ public class Join_Find extends AppCompatActivity {
                 String email = et_inpEmail.getText().toString().trim();
 
                 if(email.equals("")) {
-                    showAlert("이메일을 입력해주세요.");
+                    showAlert("이메일을 입력해주세요.", 0);
                     return;
                 }
                 mDatabase.orderByChild("emailId").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -168,7 +165,7 @@ public class Join_Find extends AppCompatActivity {
                             modifyPw.setVisibility(View.VISIBLE);
                         }
                         else {
-                            showAlert("등록되지 않은 이메일 입니다. 다시 시도해주세요.");
+                            showAlert("등록되지 않은 이메일 입니다. 다시 시도해주세요.", 0);
                             et_inpEmail.setText("");
                         }
                     }
@@ -186,16 +183,16 @@ public class Join_Find extends AppCompatActivity {
                 String updateRePw = et_newRePw.getText().toString().trim();
 
                 if(updatePw.equals("")) {
-                    showAlert("새로운 비밀번호를 입력해주세요.");
+                    showAlert("새로운 비밀번호를 입력해주세요.", 0);
                     return;
                 }
                 if(updateRePw.equals("")) {
-                    showAlert("비밀번호를 확인해주세요.");
+                    showAlert("비밀번호를 확인해주세요.", 0);
                     return;
                 }
 
                 if(!updatePw.equals(updateRePw)) {
-                    showAlert("비밀번호가 서로 일치하지 않습니다.");
+                    showAlert("비밀번호가 서로 일치하지 않습니다.", 0);
                     return;
                 }
 
@@ -206,7 +203,7 @@ public class Join_Find extends AppCompatActivity {
 
                 mDatabase.child(myUid).updateChildren(map);
 
-                showAlert("비밀번호 변경이 완료되었습니다.");
+                showAlert("비밀번호 변경이 완료되었습니다.", 1);
 
                 modifyPw.setVisibility(View.INVISIBLE);
             }
@@ -217,7 +214,7 @@ public class Join_Find extends AppCompatActivity {
             public void onClick(View view) {
                 String empno = et_inpEmp.getText().toString().trim();
                 if(empno.equals("")) {
-                    showAlert("사원번호를 입력해주세요.");
+                    showAlert("사원번호를 입력해주세요.", 0);
                     return;
                 }
                 mDatabase.orderByChild("empno").equalTo(empno).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -233,7 +230,7 @@ public class Join_Find extends AppCompatActivity {
                             tv_sucFindYourId.setText("" + userInfo.get(0).emailId);
                             tv_viewId.setText(userInfo.get(0).name + "님의 계정은 다음과 같습니다.");
                         } else {
-                            showAlert("등록된 사원이 아닙니다. 다시 시도해주세요.");
+                            showAlert("등록된 사원이 아닙니다. 다시 시도해주세요.", 0);
                             et_inpEmp.setText("");
                         }
                     }
@@ -258,39 +255,39 @@ public class Join_Find extends AppCompatActivity {
                 String job = et_job.getText().toString().trim();
 
                 if(email.equals("")) {
-                    showAlert("이메일 아이디를 입력해주세요.");
+                    showAlert("이메일 아이디를 입력해주세요.", 0);
                     return;
                 }
                 if(pw.equals("")) {
-                    showAlert("비밀번호를 입력해주세요.");
+                    showAlert("비밀번호를 입력해주세요.", 0);
                     return;
                 }
                 if(rePw.equals("")) {
-                    showAlert("비밀번호를 확인해주세요.");
+                    showAlert("비밀번호를 확인해주세요.", 0);
                     return;
                 }
                 if(name.equals("")) {
-                    showAlert("이름을 입력해주세요.");
+                    showAlert("이름을 입력해주세요.", 0);
                     return;
                 }
                 if(emp.equals("")) {
-                    showAlert("사원번호를 입력해주세요.");
+                    showAlert("사원번호를 입력해주세요.", 0);
                     return;
                 }
                 if(hp.equals("")) {
-                    showAlert("전화번호를 입력해주세요.");
+                    showAlert("전화번호를 입력해주세요.", 0);
                     return;
                 }
                 if(dept.equals("")) {
-                    showAlert("부서를 입력해주세요.");
+                    showAlert("부서를 입력해주세요.", 0);
                     return;
                 }
                 if(job.equals("")) {
-                    showAlert("직급을 입력해주세요.");
+                    showAlert("직급을 입력해주세요.", 0);
                     return;
                 }
                 if(!pw.equals(rePw)) {
-                    showAlert("비밀번호가 일치하지 않습니다.");
+                    showAlert("비밀번호가 일치하지 않습니다.", 0);
                     return;
                 }
                 mAuth.createUserWithEmailAndPassword(email, rePw)
@@ -305,8 +302,8 @@ public class Join_Find extends AppCompatActivity {
                                 JoinDTO joinDTO = new JoinDTO(email, rePw, name, emp, hp, dept,job);
 
                                 mDatabase.child(uid).setValue(joinDTO);
-//                                    thread.interrupt();
-                                showAlert("가입이 완료되었습니다.");
+
+                                showAlert("가입이 완료되었습니다.", 1);
 
                                 et_mail.setText("");
                                 et_pw.setText("");
@@ -316,12 +313,8 @@ public class Join_Find extends AppCompatActivity {
                                 et_phone.setText("");
                                 et_dept.setText("");
                                 et_job.setText("");
-
-                                Intent intent = new Intent(getApplication(), Login.class);
-                                startActivity(intent);
-                                finish();
                             } else {
-                                showAlert("가입에 실패했습니다. 다시 시도해주세요.");
+                                showAlert("가입에 실패했습니다. 다시 시도해주세요.", 0);
                             }
                         }
                     });
@@ -378,12 +371,16 @@ public class Join_Find extends AppCompatActivity {
         });
     }
     // 다이얼로그 창 띄우는 메서드
-    public void showAlert(String msg) {
+    public void showAlert(String msg, int chk) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage(msg);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
-            public void onClick(DialogInterface dialog, int id) {}
+            public void onClick(DialogInterface dialog, int id) {
+                if(chk == 1) {
+                    finish();
+                }
+            }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
