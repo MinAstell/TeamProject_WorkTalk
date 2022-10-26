@@ -7,8 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,37 +25,68 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Login_Join extends AppCompatActivity {
+public class Join_Find extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
     private String myUid;
 
-    EditText et_mail, et_pw, et_pw2, et_name, et_emp, et_phone, et_dept,
-            et_job, et_mail_login, et_pw_login, et_inpEmp,
-            et_inpEmail, et_newPw, et_newRePw;
-    ImageButton ib_all_dell_1, ib_all_dell_2, ib_all_dell_3, ib_all_dell_4, ib_all_dell_5,
-            ib_all_dell_6, ib_all_dell_7, ib_all_dell_8, ib_all_del1_login, ib_all_del2_login;
-    Button btn_join, btn_login, btn_transJoin, btn_selAccount, btn_selPw, btn_sendToDbFindYourAct,
-            btn_sendToDbFindYourPw, btn_modifyPw;
+    EditText et_mail_login, // 로그인 창 메일(ID겸) 입력하는 텍스트
+             et_pw_login,   // 로그인 창 비밀번호 입력하는 텍스트
+             et_mail,       // 회원가입 창 메일(ID겸) 입력하는 텍스트
+             et_pw,         // 회원가입 창 비밀번호 입력하는 텍스트
+             et_pw2,        // 회원가입 창 비밀번호 확인 입력하는 텍스트
+             et_name,       // 회원가입 창 이름 입력하는 텍스트
+             et_emp,        // 회원가입 창 사원번호 입력하는 텍스트
+             et_phone,      // 회원가입 창 전화번호 입력하는 텍스트
+             et_dept,       // 회원가입 창 부서이름 입력하는 텍스트
+             et_job,        // 회원가입 창 직책 입력하는 텍스트
+             et_inpEmp,     // 계정 찾기 창 사원번호 입력하는 텍스트
+             et_inpEmail,   // 비밀번호 찾기 창 메일(ID겸) 입력하는 텍스트
+             et_newPw,      // 비밀번호 찾기 창 비밀번호 재설정 입력하는 텍스트
+             et_newRePw;    // 비밀번호 찾기 창 비밀번호 재설정 확인 입력하는 텍스트
 
-    LinearLayout loginPage, joinPage, selAccount, selPw, modifyPw;
-    TextView tv_sucFindYourId, tv_viewId;
+    ImageButton ib_all_del1_login, // 로그인 창 메일(ID겸) 한번에 삭제하는 이미지버튼
+                ib_all_del2_login, // 로그인 창 비밀번호 한번에 삭제하는 이미지버튼
+                ib_all_dell_1,     // 회원가입 창 메일(ID겸) 한번에 삭제하는 이미지버튼
+                ib_all_dell_2,     // 회원가입 창 비밀번호 한번에 삭제하는 이미지버튼
+                ib_all_dell_3,     // 회원가입 창 비밀번호 확인 한번에 삭제하는 이미지버튼
+                ib_all_dell_4,     // 회원가입 창 이름 한번에 삭제하는 이미지버튼
+                ib_all_dell_5,     // 회원가입 창 사원번호 한번에 삭제하는 이미지버튼
+                ib_all_dell_6,     // 회원가입 창 전화번호 한번에 삭제하는 이미지버튼
+                ib_all_dell_7,     // 회원가입 창 부서이름 한번에 삭제하는 이미지버튼
+                ib_all_dell_8;     // 회원가입 창 직책 한번에 삭제하는 이미지버튼
 
-    ArrayList<JoinDTO> userInfo = new ArrayList<>();
+    Button btn_login,               // 로그인 창 로그인 버튼
+           btn_join,                // 회원가입 창 회원가입 버튼
+           btn_sendToDbFindYourAct, // 계정 찾기 창 계정 찾기 버튼
+           btn_sendToDbFindYourPw,  // 비밀번호 찾기 창 비밀번호 변경 버튼
+           btn_modifyPw;            // 비밀번호 찾기 창 비밀번호 재설정 버튼
+
+    LinearLayout loginPage2, // 회원가입 가리는 로고있는 백그라운드 레이아웃
+                 selAccount, // 계정 찾기 레이아웃
+                 selPw,      // 비밀번호 찾기 레이아웃
+                 modifyPw;   // 비밀번호를 찾은 뒤 비밀번호가 있을경우 재설정을 하게 뜨는 레이아웃
+
+    TextView tv_sucFindYourId, // 계정주인이름 의 계정은 다음과 같습니다 라고 뜨는 텍스트뷰
+             tv_viewId;        // 찾은계정이 뜨는 텍스트뷰
+
+    ArrayList<JoinDTO> userInfo = new ArrayList<>(); // DB 유저 이름과 메일(ID)을 담는 리스트
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_join);
+        setContentView(R.layout.activity_join_find);
+
+        // 액티비티가 넘어갈때 원하는 레이아웃이 뜨도록 하는 PutExtra를 받는 GetExtra
+        Intent intent = getIntent();
+        String text = intent.getStringExtra("0");
 
         mDatabase = FirebaseDatabase.getInstance().getReference("UserInfo");
         mAuth = FirebaseAuth.getInstance();
@@ -69,12 +99,9 @@ public class Login_Join extends AppCompatActivity {
         et_phone = (EditText) findViewById(R.id.et_phone);
         et_dept = (EditText) findViewById(R.id.et_dept);
         et_job = (EditText) findViewById(R.id.et_job);
-
         et_mail_login = (EditText) findViewById(R.id.et_mail_login);
         et_pw_login = (EditText) findViewById(R.id.et_pw_login);
-
         et_inpEmp = (EditText) findViewById(R.id.et_inpEmp);
-
         et_inpEmail = (EditText) findViewById(R.id.et_inpEmail);
         et_newPw = (EditText) findViewById(R.id.et_newPw);
         et_newRePw = (EditText) findViewById(R.id.et_newRePw);
@@ -83,15 +110,8 @@ public class Login_Join extends AppCompatActivity {
         tv_viewId = (TextView) findViewById(R.id.tv_viewId);
 
         btn_join = (Button) findViewById(R.id.btn_join);
-
         btn_login = (Button) findViewById(R.id.btn_login);
-        btn_transJoin = (Button) findViewById(R.id.btn_transJoin);
-
-        btn_selAccount = (Button) findViewById(R.id.btn_selAccount);
-        btn_selPw = (Button) findViewById(R.id.btn_selPw);
-
         btn_sendToDbFindYourAct = (Button) findViewById(R.id.btn_sendToDbFindYourAct);
-
         btn_sendToDbFindYourPw = (Button) findViewById(R.id.btn_sendToDbFindYourPw);
         btn_modifyPw = (Button) findViewById(R.id.btn_modifyPw);
 
@@ -103,40 +123,32 @@ public class Login_Join extends AppCompatActivity {
         ib_all_dell_6 = (ImageButton) findViewById(R.id.ib_all_del6);
         ib_all_dell_7 = (ImageButton) findViewById(R.id.ib_all_del7);
         ib_all_dell_8 = (ImageButton) findViewById(R.id.ib_all_del8);
-
         ib_all_del1_login = (ImageButton) findViewById(R.id.ib_all_del1_login);
         ib_all_del2_login = (ImageButton) findViewById(R.id.ib_all_del2_login);
 
-        loginPage = (LinearLayout) findViewById(R.id.loginPage);
-        joinPage = (LinearLayout) findViewById(R.id.joinPage);
-
+        loginPage2 = (LinearLayout) findViewById(R.id.loginPage2);
         selAccount = (LinearLayout) findViewById(R.id.selAccount);
         selPw = (LinearLayout) findViewById(R.id.selPw);
-
         modifyPw = (LinearLayout) findViewById(R.id.modifyPw);
 
 //        dellWatching thread = new dellWatching();
 //        thread.start();
 
-        btn_selAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selAccount.setVisibility(View.VISIBLE);
-                selPw.setVisibility(View.INVISIBLE);
-                loginPage.setVisibility(View.INVISIBLE);
-                joinPage.setVisibility(View.INVISIBLE);
-            }
-        });
-        btn_selPw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selAccount.setVisibility(View.INVISIBLE);
-                selPw.setVisibility(View.VISIBLE);
-                loginPage.setVisibility(View.INVISIBLE);
-                joinPage.setVisibility(View.INVISIBLE);
-            }
-        });
-
+        // 액티비티가 넘어갈때 원하는 레이아웃이 뜨도록 하는 PutExtra를 받는 GetExtra
+        if(text.equals("0")) {
+            selAccount.setVisibility(View.INVISIBLE);
+            selPw.setVisibility(View.INVISIBLE);
+            loginPage2.setVisibility(View.INVISIBLE);
+        } else if(text.equals("1")) {
+            selAccount.setVisibility(View.VISIBLE);
+            selPw.setVisibility(View.INVISIBLE);
+            loginPage2.setVisibility(View.VISIBLE);
+        } else if(text.equals("2")) {
+            selAccount.setVisibility(View.INVISIBLE);
+            selPw.setVisibility(View.VISIBLE);
+            loginPage2.setVisibility(View.VISIBLE);
+        }
+        // 비밀번호 찾기의 이메일 찾은 뒤 비밀번호 변경
         btn_sendToDbFindYourPw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,7 +158,6 @@ public class Login_Join extends AppCompatActivity {
                     showAlert("이메일을 입력해주세요.");
                     return;
                 }
-
                 mDatabase.orderByChild("emailId").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -154,7 +165,6 @@ public class Login_Join extends AppCompatActivity {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 myUid = snapshot.getKey();
                             }
-
                             modifyPw.setVisibility(View.VISIBLE);
                         }
                         else {
@@ -162,15 +172,13 @@ public class Login_Join extends AppCompatActivity {
                             et_inpEmail.setText("");
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
             }
         });
-
+        // 비밀번호 찾기의 찾은 이메일 비밀번호 재설정
         btn_modifyPw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -203,102 +211,39 @@ public class Login_Join extends AppCompatActivity {
                 modifyPw.setVisibility(View.INVISIBLE);
             }
         });
-
+        // 계정 찾기의 사원번호로 메일 찾기
         btn_sendToDbFindYourAct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String empno = et_inpEmp.getText().toString().trim();
-
                 if(empno.equals("")) {
                     showAlert("사원번호를 입력해주세요.");
                     return;
                 }
-
                 mDatabase.orderByChild("empno").equalTo(empno).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getChildrenCount() > 0) {
                             userInfo.clear();
-
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
                                 JoinDTO joinDTO = snapshot.getValue(JoinDTO.class);
                                 userInfo.add(joinDTO);
                             }
-
                             Log.d("listSize", String.valueOf(userInfo.size()));
-
-                            tv_sucFindYourId.setText("email : " + userInfo.get(0).emailId);
+                            tv_sucFindYourId.setText("" + userInfo.get(0).emailId);
                             tv_viewId.setText(userInfo.get(0).name + "님의 계정은 다음과 같습니다.");
-                        }
-                        else {
+                        } else {
                             showAlert("등록된 사원이 아닙니다. 다시 시도해주세요.");
                             et_inpEmp.setText("");
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
             }
         });
-
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String id = et_mail_login.getText().toString().trim();
-                String pw = et_pw_login.getText().toString().trim();
-
-                if(id.equals("")) {
-                    showAlert("아이디를 입력해주세요.");
-                    return;
-                }
-                if(pw.equals("")) {
-                    showAlert("비밀번호를 입력해주세요.");
-                    return;
-                }
-
-                mAuth.signInWithEmailAndPassword(id, pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Intent intent = new Intent(getApplication(), Fragment.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        else {
-                            showAlert("로그인에 실패했습니다. 다시 시도해주세요.");
-                        }
-                    }
-                });
-            }
-        });
-
-        btn_transJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selAccount.setVisibility(View.INVISIBLE);
-                selPw.setVisibility(View.INVISIBLE);
-                loginPage.setVisibility(View.INVISIBLE);
-                joinPage.setVisibility(View.VISIBLE);
-            }
-        });
-
-        ib_all_del1_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                et_mail_login.setText("");
-            }
-        });
-        ib_all_del2_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                et_pw_login.setText("");
-            }
-        });
-
+        // 회원가입 레이아웃
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -344,14 +289,12 @@ public class Login_Join extends AppCompatActivity {
                     showAlert("직급을 입력해주세요.");
                     return;
                 }
-
                 if(!pw.equals(rePw)) {
                     showAlert("비밀번호가 일치하지 않습니다.");
                     return;
                 }
-
                 mAuth.createUserWithEmailAndPassword(email, rePw)
-                    .addOnCompleteListener(Login_Join.this, new OnCompleteListener<AuthResult>() {
+                    .addOnCompleteListener(Join_Find.this, new OnCompleteListener<AuthResult>() {
 
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -374,10 +317,9 @@ public class Login_Join extends AppCompatActivity {
                                 et_dept.setText("");
                                 et_job.setText("");
 
-                                selAccount.setVisibility(View.INVISIBLE);
-                                selPw.setVisibility(View.INVISIBLE);
-                                loginPage.setVisibility(View.VISIBLE);
-                                joinPage.setVisibility(View.INVISIBLE);
+                                Intent intent = new Intent(getApplication(), Login.class);
+                                startActivity(intent);
+                                finish();
                             } else {
                                 showAlert("가입에 실패했습니다. 다시 시도해주세요.");
                             }
@@ -385,7 +327,7 @@ public class Login_Join extends AppCompatActivity {
                     });
             }
         });
-
+        // 각각 텍스트를 한번에 지우는 버튼 모음
         ib_all_dell_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -435,106 +377,13 @@ public class Login_Join extends AppCompatActivity {
             }
         });
     }
-
-//    private class dellWatching extends Thread {
-//
-//        public dellWatching() {
-//            // 초기화 작업
-//        }
-//
-//        public void run() {
-//
-//            while(true) {
-//
-//                // 스레드에게 수행시킬 동작들 구현
-//                String email = et_mail.getText().toString().trim();
-//                String pw = et_pw.getText().toString().trim();
-//                String rePw = et_pw2.getText().toString().trim();
-//                String name = et_name.getText().toString().trim();
-//                String emp = et_emp.getText().toString().trim();
-//                String hp = et_phone.getText().toString().trim();
-//                String dept = et_dept.getText().toString().trim();
-//                String job = et_job.getText().toString().trim();
-//
-//                if (!email.equals("")) {
-//                    ib_all_dell_1.setVisibility(View.VISIBLE);
-//                    ib_all_dell_1.setImageResource(R.drawable.btn_all_del);
-//                }
-//                if (email.equals("")) {
-//                    ib_all_dell_1.setVisibility(View.GONE);
-//                }
-//
-//                if (!pw.equals("")) {
-//                    ib_all_dell_2.setVisibility(View.VISIBLE);
-//                    ib_all_dell_2.setImageResource(R.drawable.btn_all_del);
-//                }
-//                if (pw.equals("")) {
-//                    ib_all_dell_2.setVisibility(View.GONE);
-//                }
-//
-//                if (!rePw.equals("")) {
-//                    ib_all_dell_3.setVisibility(View.VISIBLE);
-//                    ib_all_dell_3.setImageResource(R.drawable.btn_all_del);
-//                }
-//                if (rePw.equals("")) {
-//                    ib_all_dell_3.setVisibility(View.GONE);
-//                }
-//
-//                if (!name.equals("")) {
-//                    ib_all_dell_4.setVisibility(View.VISIBLE);
-//                    ib_all_dell_4.setImageResource(R.drawable.btn_all_del);
-//                }
-//                if (name.equals("")) {
-//                    ib_all_dell_4.setVisibility(View.GONE);
-//                }
-//
-//                if (!emp.equals("")) {
-//                    ib_all_dell_5.setVisibility(View.VISIBLE);
-//                    ib_all_dell_5.setImageResource(R.drawable.btn_all_del);
-//                }
-//                if (emp.equals("")) {
-//                    ib_all_dell_5.setVisibility(View.GONE);
-//                }
-//
-//                if (!hp.equals("")) {
-//                    ib_all_dell_6.setVisibility(View.VISIBLE);
-//                    ib_all_dell_6.setImageResource(R.drawable.btn_all_del);
-//                }
-//                if (hp.equals("")) {
-//                    ib_all_dell_6.setVisibility(View.GONE);
-//                }
-//
-//                if (!dept.equals("")) {
-//                    ib_all_dell_7.setVisibility(View.VISIBLE);
-//                    ib_all_dell_7.setImageResource(R.drawable.btn_all_del);
-//                }
-//                if (dept.equals("")) {
-//                    ib_all_dell_7.setVisibility(View.GONE);
-//                }
-//
-//                if (!job.equals("")) {
-//                    ib_all_dell_8.setVisibility(View.VISIBLE);
-//                    ib_all_dell_8.setImageResource(R.drawable.btn_all_del);
-//                }
-//                if (job.equals("")) {
-//                    ib_all_dell_8.setVisibility(View.GONE);
-//                }
-//            }
-//        }
-//    }
-
-    public void showAlert(String msg) {    // 다이얼로그 창 띄우는 메서드
-
+    // 다이얼로그 창 띄우는 메서드
+    public void showAlert(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
         builder.setTitle("").setMessage(msg);
-
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
             @Override
-            public void onClick(DialogInterface dialog, int id)
-            {
-
-            }
+            public void onClick(DialogInterface dialog, int id) {}
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
