@@ -26,7 +26,6 @@
         </activity>
         <activity android:name=".Login" />
         <activity android:name=".Join_Find" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".Fragment" />
         <activity android:name=".FragSettings" />
         <activity android:name=".FragTalk" />

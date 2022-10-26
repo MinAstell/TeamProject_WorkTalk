@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.ktx.Firebase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,6 +85,8 @@ public class Join_Find extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_find);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         // 액티비티가 넘어갈때 원하는 레이아웃이 뜨도록 하는 PutExtra를 받는 GetExtra
         Intent intent = getIntent();
@@ -145,7 +149,7 @@ public class Join_Find extends AppCompatActivity {
             selPw.setVisibility(View.VISIBLE);
             loginPage2.setVisibility(View.VISIBLE);
         }
-        // 비밀번호 찾기의 이메일 찾은 뒤 비밀번호 변경
+        // 비밀번호 찾기의 비밀번호 변경 버튼 (메일 링크로 비번 재설정)
         btn_sendToDbFindYourPw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,7 +166,25 @@ public class Join_Find extends AppCompatActivity {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 myUid = snapshot.getKey();
                             }
-                            modifyPw.setVisibility(View.VISIBLE);
+
+                            String myId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                            if (myId != null) {
+                                FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            showAlert("가입된 이메일로 비밀번호 재설정 링크가 전송되었습니다.", 1);
+                                        }
+                                        else {
+                                            showAlert("요청한 작업을 수행할 수 없습니다.", 0);
+                                        }
+                                    }
+                                });
+                            }
+                            else {
+                                showAlert("요청한 작업을 수행할 수 없습니다.", 0);
+                            }
                         }
                         else {
                             showAlert("등록되지 않은 이메일 입니다. 다시 시도해주세요.", 0);
@@ -173,39 +195,6 @@ public class Join_Find extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-            }
-        });
-        // 비밀번호 찾기의 찾은 이메일 비밀번호 재설정
-        btn_modifyPw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String updatePw = et_newPw.getText().toString().trim();
-                String updateRePw = et_newRePw.getText().toString().trim();
-
-                if(updatePw.equals("")) {
-                    showAlert("새로운 비밀번호를 입력해주세요.", 0);
-                    return;
-                }
-                if(updateRePw.equals("")) {
-                    showAlert("비밀번호를 확인해주세요.", 0);
-                    return;
-                }
-
-                if(!updatePw.equals(updateRePw)) {
-                    showAlert("비밀번호가 서로 일치하지 않습니다.", 0);
-                    return;
-                }
-
-                Map<String, Object> map = new HashMap<>();
-                map.put("pw", updateRePw);
-
-                Log.d("myUid", myUid);
-
-                mDatabase.child(myUid).updateChildren(map);
-
-                showAlert("비밀번호 변경이 완료되었습니다.", 1);
-
-                modifyPw.setVisibility(View.INVISIBLE);
             }
         });
         // 계정 찾기의 사원번호로 메일 찾기

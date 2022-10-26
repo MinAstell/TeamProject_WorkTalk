@@ -13,6 +13,7 @@ public class Fragment extends AppCompatActivity {
     private FragProject fragProject;
     private FragTalk fragTalk;
     private FragSettings fragSettings;
+    private FragUsers fragUsers;
     private FragmentTransaction transaction;
 
     @Override
@@ -25,6 +26,7 @@ public class Fragment extends AppCompatActivity {
         fragProject = new FragProject();
         fragTalk = new FragTalk();
         fragSettings = new FragSettings();
+        fragUsers = new FragUsers();
 
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.framelayout, fragProject).commitAllowingStateLoss();
@@ -32,6 +34,7 @@ public class Fragment extends AppCompatActivity {
         findViewById(R.id.iv_project).setOnClickListener(mClick);
         findViewById(R.id.iv_talk).setOnClickListener(mClick);
         findViewById(R.id.iv_settings).setOnClickListener(mClick);
+        findViewById(R.id.iv_users).setOnClickListener(mClick);
     }
     View.OnClickListener mClick = new View.OnClickListener() {
         public void onClick(View v) {
@@ -45,6 +48,9 @@ public class Fragment extends AppCompatActivity {
                     break;
                 case R.id.iv_settings:
                     transaction.replace(R.id.framelayout, fragSettings).commitAllowingStateLoss();
+                    break;
+                case R.id.iv_users:
+                    transaction.replace(R.id.framelayout, fragUsers).commitAllowingStateLoss();
                     break;
             }
         }
