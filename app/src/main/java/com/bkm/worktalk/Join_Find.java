@@ -299,7 +299,7 @@ public class Join_Find extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                                JoinDTO joinDTO = new JoinDTO(email, rePw, name, emp, hp, dept,job);
+                                JoinDTO joinDTO = new JoinDTO(email, rePw, name, emp, hp, dept, job);
 
                                 mDatabase.child(uid).setValue(joinDTO);
 
