@@ -126,6 +126,7 @@ public class Login extends AppCompatActivity {
 
                                         editor.putString("myUid", myUid);
                                         editor.putString("myName", joinDTO.name);
+                                        editor.putString("myDept", joinDTO.deptno);
                                         editor.apply();
 
                                         Map<String, Object> map = new HashMap<>();
@@ -135,6 +136,8 @@ public class Login extends AppCompatActivity {
 
                                         Intent intent = new Intent(getApplication(), Fragment.class);
                                         intent.putExtra("myName", joinDTO.name);
+                                        intent.putExtra("myDept", joinDTO.deptno);
+                                        intent.putExtra("myUid", myUid);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -181,10 +184,13 @@ public class Login extends AppCompatActivity {
     public void chkLoginStatus() {
         String myUid = appData.getString("myUid", "");
         String myName = appData.getString("myName", "");
+        String myDept = appData.getString("myDept", "");
 
         if(!myUid.equals("")) {
             Intent intent = new Intent(getApplication(), Fragment.class);
             intent.putExtra("myName", myName);
+            intent.putExtra("myDept", myDept);
+            intent.putExtra("myUid", myUid);
             startActivity(intent);
             finish();
         }
