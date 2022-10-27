@@ -28,6 +28,24 @@ import java.util.ArrayList;
 public class FragUsers extends Fragment {
 
     private static String myName;
+    private static String myUid;
+    private static String myDept;
+
+    public String getMyUid() {
+        return myUid;
+    }
+
+    public void setMyUid(String myUid) {
+        this.myUid = myUid;
+    }
+
+    public String getMyDept() {
+        return myDept;
+    }
+
+    public void setMyDept(String myDept) {
+        this.myDept = myDept;
+    }
 
     public String getMyName() {
         return myName;
@@ -83,7 +101,7 @@ public class FragUsers extends Fragment {
         alertDialog.show();
     }
     public void selUserList() {
-        mDatabase.child("서버개발팀").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(getMyDept()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getChildrenCount() > 0) {
@@ -92,7 +110,9 @@ public class FragUsers extends Fragment {
 
                         UserListsDTO userListsDTO = snapshot.getValue(UserListsDTO.class);
 
-                        userList.add(userListsDTO);
+                        if(!userListsDTO.name.equals(getMyName())) {
+                            userList.add(userListsDTO);
+                        }
                     }
 
                     Log.d("userList", userList.get(0).name);

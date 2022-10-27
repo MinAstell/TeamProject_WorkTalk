@@ -10,7 +10,7 @@ import android.view.View;
 
 public class Fragment extends AppCompatActivity {
 
-    private String myName;
+    private String myName, myDept, myUid;
 
     private FragmentManager fragmentManager;
     private FragProject fragProject;
@@ -26,6 +26,8 @@ public class Fragment extends AppCompatActivity {
 
         Intent intent = getIntent();
         myName = intent.getStringExtra("myName");
+        myDept = intent.getStringExtra("myDept");
+        myUid = intent.getStringExtra("myUid");
 
         fragmentManager = getSupportFragmentManager();
 
@@ -59,6 +61,8 @@ public class Fragment extends AppCompatActivity {
                     transaction.replace(R.id.framelayout, fragUsers).commitAllowingStateLoss();
                     FragUsers fragUsers = new FragUsers();
                     fragUsers.setMyName(myName);
+                    fragUsers.setMyDept(myDept);
+                    fragUsers.setMyUid(myUid);
                     break;
             }
         }
