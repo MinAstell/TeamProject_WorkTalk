@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/BaekGyeongMin/TeamProject_WorkTalk/app/src/main/res/layout/activity_frag_project.xml" value="0.36614583333333334" />
+        <entry key="..\:/BaekGyeongMin/TeamProject_WorkTalk/app/src/main/res/layout/activity_frag_users.xml" value="0.36614583333333334" />
+        <entry key="..\:/BaekGyeongMin/TeamProject_WorkTalk/app/src/main/res/layout/activity_fragment.xml" value="0.36614583333333334" />
+        <entry key="..\:/BaekGyeongMin/TeamProject_WorkTalk/app/src/main/res/layout/activity_insert_test.xml" value="0.36614583333333334" />
         <entry key="..\:/BaekGyeongMin/TeamProject_WorkTalk/app/src/main/res/layout/activity_login_join.xml" value="0.36614583333333334" />
+        <entry key="..\:/BaekGyeongMin/TeamProject_WorkTalk/app/src/main/res/layout/activity_logo.xml" value="0.36614583333333334" />
+        <entry key="..\:/BaekGyeongMin/TeamProject_WorkTalk/app/src/main/res/layout/item_userlist.xml" value="0.36614583333333334" />
         <entry key="..\:/TeamProject_WorkTalk/app/src/main/res/layout/activity_addteam.xml" value="0.3619791666666667" />
         <entry key="..\:/TeamProject_WorkTalk/app/src/main/res/layout/activity_frag_project.xml" value="0.18489583333333334" />
         <entry key="..\:/TeamProject_WorkTalk/app/src/main/res/layout/activity_frag_settings.xml" value="0.18489583333333334" />
