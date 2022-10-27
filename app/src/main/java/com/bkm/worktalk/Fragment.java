@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 public class Fragment extends AppCompatActivity {
+
+    private String myName;
 
     private FragmentManager fragmentManager;
     private FragProject fragProject;
@@ -20,6 +23,9 @@ public class Fragment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
+
+        Intent intent = getIntent();
+        myName = intent.getStringExtra("myName");
 
         fragmentManager = getSupportFragmentManager();
 
@@ -51,6 +57,8 @@ public class Fragment extends AppCompatActivity {
                     break;
                 case R.id.iv_users:
                     transaction.replace(R.id.framelayout, fragUsers).commitAllowingStateLoss();
+                    FragUsers fragUsers = new FragUsers();
+                    fragUsers.setMyName(myName);
                     break;
             }
         }
