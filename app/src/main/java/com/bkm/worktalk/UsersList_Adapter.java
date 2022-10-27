@@ -1,7 +1,11 @@
 package com.bkm.worktalk;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,10 +36,14 @@ public class UsersList_Adapter extends RecyclerView.Adapter<UsersList_Adapter.Cu
 
     private ArrayList<UserListsDTO> arrayList;
     private Context context;
+    private String myName;
+    private String teamUser;
+    private String chatRoomPath;
 
-    public UsersList_Adapter(ArrayList<UserListsDTO> arrayList) {
+    public UsersList_Adapter(ArrayList<UserListsDTO> arrayList, String myName, Context context) {
         this.arrayList = arrayList;
-//        this.context = context;
+        this.myName = myName;
+        this.context = context;
     }
 
     @NonNull
@@ -42,6 +52,8 @@ public class UsersList_Adapter extends RecyclerView.Adapter<UsersList_Adapter.Cu
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_userlist, parent, false);
         CustomViewHolder holder = new CustomViewHolder(view);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("chatRoom");
 
         return holder;
     }
@@ -56,6 +68,16 @@ public class UsersList_Adapter extends RecyclerView.Adapter<UsersList_Adapter.Cu
         holder.tv_userEmail.setText(arrayList.get(position).email);
 
         holder.itemView.setTag(position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                teamUser = holder.tv_userName.getText().toString();
+
+                Log.d("myName, teamUser", myName + ", " + teamUser);
+                chatRoomPathChk();
+            }
+        });
     }
 
     @Override
@@ -92,5 +114,98 @@ public class UsersList_Adapter extends RecyclerView.Adapter<UsersList_Adapter.Cu
             this.tv_userHp = (TextView) itemView.findViewById(R.id.tv_userHp);
             this.tv_userEmail = (TextView) itemView.findViewById(R.id.tv_userEmail);
         }
+    }
+
+    public void chatRoomPathChk() {
+
+        mDatabase.child(myName+"_"+teamUser).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.getChildrenCount() > 0) {
+
+                    chatRoomPath = myName+"_"+teamUser;
+                    showAlert("chatRoomPath" + chatRoomPath);
+
+//                    Intent intent = new Intent(context, TestChatRoom_Read.class);
+//                    intent.putExtra("chatRoomPath", chatRoomPath);
+//                    intent.putExtra("myUid", myUid2);
+//                    intent.putExtra("myName", myName2);
+//                    intent.putExtra("friendName", friendName);
+//                    context.startActivity(intent);
+
+                    return;
+                }
+                else {
+
+                    mDatabase.child("chatRoom").child(teamUser+"_"+myName).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            if(dataSnapshot.getChildrenCount() > 0) {
+
+                                chatRoomPath = teamUser+"_"+myName;
+                                showAlert("chatRoomPath" + chatRoomPath);
+
+//                                Intent intent = new Intent(context, TestChatRoom_Read.class);
+//                                intent.putExtra("chatRoomPath", chatRoomPath);
+//                                intent.putExtra("myUid", myUid2);
+//                                intent.putExtra("myName", myName2);
+//                                intent.putExtra("friendName", friendName);
+//                                context.startActivity(intent);
+
+                                return;
+                            }
+                            else {
+
+                                long now = System.currentTimeMillis();
+                                Date date = new Date(now);
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 hh:mm");
+                                String getTime = dateFormat.format(date);
+
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("createdTime", getTime);
+
+                                mDatabase.child(myName + "_" + teamUser).push().setValue(map);
+                                chatRoomPath = myName + "_" + teamUser;
+                                showAlert("chatRoomPath" + chatRoomPath);
+
+//                                Intent intent = new Intent(context, TestChatRoom_Read.class);
+//                                intent.putExtra("chatRoomPath", chatRoomPath);
+//                                intent.putExtra("myName", myName2);
+//                                intent.putExtra("myUid", myUid2);
+//                                intent.putExtra("friendName", friendName);
+//                                context.startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void showAlert(String msg) {    // 다이얼로그 창 띄우는 메서드
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        builder.setTitle("").setMessage(msg);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

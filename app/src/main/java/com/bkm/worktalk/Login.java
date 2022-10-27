@@ -3,6 +3,7 @@ package com.bkm.worktalk;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,7 @@ public class Login extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private SharedPreferences appData;
 
     EditText et_mail_login, et_pw_login;
     ImageButton ib_all_del1_login, ib_all_del2_login;
@@ -45,6 +47,8 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        appData = getSharedPreferences("appData", MODE_PRIVATE);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -62,6 +66,8 @@ public class Login extends AppCompatActivity {
 
         ib_all_del1_login = (ImageButton) findViewById(R.id.ib_all_del1_login);
         ib_all_del2_login = (ImageButton) findViewById(R.id.ib_all_del2_login);
+
+        chkLoginStatus();  // 로그인 가버렷!!
 
         btn_transJoin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,14 +114,37 @@ public class Login extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                            Map<String, Object> map = new HashMap<>();
-                            map.put("pw", pw);
+                            mDatabase.child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.getChildrenCount() > 0) {
+                                        JoinDTO joinDTO = dataSnapshot.getValue(JoinDTO.class);
 
-                            mDatabase.child(myUid).updateChildren(map);
+                                        Log.d("myName", joinDTO.name);
 
-                            Intent intent = new Intent(getApplication(), Fragment.class);
-                            startActivity(intent);
-                            finish();
+                                        SharedPreferences.Editor editor = appData.edit();
+
+                                        editor.putString("myUid", myUid);
+                                        editor.putString("myName", joinDTO.name);
+                                        editor.apply();
+
+                                        Map<String, Object> map = new HashMap<>();
+                                        map.put("pw", pw);
+
+                                        mDatabase.child(myUid).updateChildren(map);
+
+                                        Intent intent = new Intent(getApplication(), Fragment.class);
+                                        intent.putExtra("myName", joinDTO.name);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
                         else {
                             showAlert("로그인에 실패했습니다. 다시 시도해주세요.");
@@ -148,5 +177,16 @@ public class Login extends AppCompatActivity {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    public void chkLoginStatus() {
+        String myUid = appData.getString("myUid", "");
+        String myName = appData.getString("myName", "");
+
+        if(!myUid.equals("")) {
+            Intent intent = new Intent(getApplication(), Fragment.class);
+            intent.putExtra("myName", myName);
+            startActivity(intent);
+            finish();
+        }
     }
 }

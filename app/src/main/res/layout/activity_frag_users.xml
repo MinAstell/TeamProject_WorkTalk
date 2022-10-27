@@ -23,11 +23,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_usersList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="bottom|right"
-                android:visibility="visible">
+                android:gravity="bottom|right">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_project"
@@ -39,19 +50,6 @@
                     android:src="@drawable/project" />
 
             </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_usersList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
         </FrameLayout>
     </LinearLayout>
 

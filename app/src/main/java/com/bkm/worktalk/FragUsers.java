@@ -2,6 +2,7 @@ package com.bkm.worktalk;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class FragUsers extends Fragment {
+
+    private static String myName;
+
+    public String getMyName() {
+        return myName;
+    }
+
+    public void setMyName(String myName) {
+        this.myName = myName;
+    }
 
     private DatabaseReference mDatabase;
     private FloatingActionButton fab_project;
@@ -86,7 +97,7 @@ public class FragUsers extends Fragment {
 
                     Log.d("userList", userList.get(0).name);
 
-                    UsersList_Adapter usersListAdapter = new UsersList_Adapter(userList);
+                    UsersList_Adapter usersListAdapter = new UsersList_Adapter(userList, getMyName(), getContext());
                     rv_userList.setAdapter(usersListAdapter);
                 }
             }
