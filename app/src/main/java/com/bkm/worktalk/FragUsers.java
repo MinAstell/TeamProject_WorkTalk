@@ -3,26 +3,51 @@ package com.bkm.worktalk;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class FragUsers extends Fragment {
 
+    private DatabaseReference mDatabase;
     private FloatingActionButton fab_project;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerView rv_userList;
+
+    ArrayList<UserListsDTO> userList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_frag_users, container, false);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference("dept");
+
         fab_project = view.findViewById(R.id.fab_project);
+        rv_userList = view.findViewById(R.id.rv_usersList);
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        rv_userList.setLayoutManager(linearLayoutManager);
+        rv_userList.setHasFixedSize(true);
+
+        selUserList();
 
         fab_project.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,5 +70,31 @@ public class FragUsers extends Fragment {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    public void selUserList() {
+        mDatabase.child("서버개발팀").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getChildrenCount() > 0) {
+                    userList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                        UserListsDTO userListsDTO = snapshot.getValue(UserListsDTO.class);
+
+                        userList.add(userListsDTO);
+                    }
+
+                    Log.d("userList", userList.get(0).name);
+
+                    UsersList_Adapter usersListAdapter = new UsersList_Adapter(userList);
+                    rv_userList.setAdapter(usersListAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
