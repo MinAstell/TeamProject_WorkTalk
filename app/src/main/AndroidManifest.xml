@@ -27,6 +27,7 @@
         <activity android:name=".Login" />
         <activity android:name=".Join_Find" />
         <activity android:name=".Fragment" />
+        <activity android:name=".CreateProject" />
         <activity android:name=".InsertOnly"/>
 
     </application>
