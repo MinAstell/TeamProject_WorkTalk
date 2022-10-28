@@ -33,7 +33,7 @@ public class CreateProject extends AppCompatActivity {
         et_createProjectName = findViewById(R.id.et_createProjectName);
         et_createProjectExplain = findViewById(R.id.et_createProjectExplain);
 
-        //버튼 누르면 값을 저장
+        //버튼 누르면 값을 저장=======================================================================
         btn_createProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +49,7 @@ public class CreateProject extends AppCompatActivity {
             }
         });
     }
-    //값을 파이어베이스 Realtime database로 넘기는 함수
+    //값을 파이어베이스 Realtime database로 넘기는 함수=================================================
     public void addProject(String projectName, String ProjectExplain) {
         //DTO에서 선언했던 함수.
         ProjectDTO projectDTO = new ProjectDTO(projectName, ProjectExplain);
@@ -59,7 +59,7 @@ public class CreateProject extends AppCompatActivity {
         databaseReference.child("projectList").child(projectName).setValue(projectDTO);
     }
 
-    // 다이얼로그 창 띄우는 메서드
+    // 다이얼로그 창 띄우는 메서드=====================================================================
     public void showAlert(String msg, int chk) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage(msg);

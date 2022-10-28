@@ -43,9 +43,60 @@
             android:maxLength="300"
             android:textSize="13sp" />
 
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="프로젝트 타이틀"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_projectImage1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:checked="true"
+                android:drawableRight="@drawable/test_icon_customize"
+                android:paddingRight="45dp" />
+
+            <RadioButton
+                android:id="@+id/radio_projectImage2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:checked="false"
+                android:drawableRight="@drawable/test_icon_customize"
+                android:paddingRight="45dp" />
+
+            <RadioButton
+                android:id="@+id/radio_projectImage3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:checked="false"
+                android:drawableRight="@drawable/test_icon_customize"
+                android:paddingRight="45dp" />
+
+            <RadioButton
+                android:id="@+id/radio_projectImage4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:checked="false"
+                android:drawableRight="@drawable/test_icon_customize"
+                android:paddingRight="45dp" />
+
+        </RadioGroup>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="5dp"
             android:gravity="right"
             android:orientation="horizontal">
 
