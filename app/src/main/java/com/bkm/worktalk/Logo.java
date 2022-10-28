@@ -18,7 +18,7 @@ public class Logo extends AppCompatActivity {
             @Override
             public void run() {
                 //Intent intent = new Intent(Logo.this, MainActivity.class);
-                Intent intent = new Intent(Logo.this, Fragment.class);
+                Intent intent = new Intent(Logo.this, Login.class);
                 startActivity(intent); // 메인 액티비티 시작
                 finish();
             }
