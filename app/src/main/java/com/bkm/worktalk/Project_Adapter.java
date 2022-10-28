@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -43,7 +46,7 @@ public class Project_Adapter extends RecyclerView.Adapter<Project_Adapter.Custom
 
     @Override
     public int getItemCount() {
-        // 삼항 연산자
+        //삼항 연산자
         return (arrayList != null ? arrayList.size() : 0);
     }
 
@@ -55,6 +58,14 @@ public class Project_Adapter extends RecyclerView.Adapter<Project_Adapter.Custom
             super(itemView);
             this.tv_ProjectName = itemView.findViewById(R.id.tv_ProjectName);
             this.tv_projectExplain = itemView.findViewById(R.id.tv_projectExplain);
+
+            //리싸이클뷰 아이템 클릭으로 프래그먼트 넘어가기===============================================
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context.getApplicationContext(), "아이템 클릭!", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
