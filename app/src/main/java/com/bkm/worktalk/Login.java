@@ -196,6 +196,8 @@ public class Login extends AppCompatActivity {
         String myName = appData.getString("myName", "");
         String myDept = appData.getString("myDept", "");
 
+
+        // else if 숙지하자! if문과는 엄연히 다름.
         if(chk_signOut) {
             SharedPreferences.Editor editor = appData.edit();
 
