@@ -4,13 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 public class Fragment extends AppCompatActivity {
 
     private String myName, myDept, myUid;
+    private static boolean chk_finish = false;
+
+    public boolean isChk_finish() {
+        return chk_finish;
+    }
+
+    public void setChk_finish(boolean chk_finish) {
+        this.chk_finish = chk_finish;
+    }
 
     private FragmentManager fragmentManager;
     private FragProject fragProject;
@@ -67,4 +78,14 @@ public class Fragment extends AppCompatActivity {
             }
         }
     };
+
+    public void signOutFinish() {
+
+        Login login = new Login();
+        login.setChk_signOut(true);
+
+        Intent intent = new Intent(Fragment.this, Login.class);
+        startActivity(intent);
+        finish();
+    }
 }

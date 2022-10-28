@@ -39,6 +39,16 @@ public class Login extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private SharedPreferences appData;
 
+    private static boolean chk_signOut = false;
+
+    public boolean isChk_signOut() {
+        return chk_signOut;
+    }
+
+    public void setChk_signOut(boolean chk_signOut) {
+        this.chk_signOut = chk_signOut;
+    }
+
     EditText et_mail_login, et_pw_login;
     ImageButton ib_all_del1_login, ib_all_del2_login;
     Button btn_login, btn_transJoin, btn_selAccount, btn_selPw;
@@ -186,7 +196,15 @@ public class Login extends AppCompatActivity {
         String myName = appData.getString("myName", "");
         String myDept = appData.getString("myDept", "");
 
-        if(!myUid.equals("")) {
+        if(chk_signOut) {
+            SharedPreferences.Editor editor = appData.edit();
+
+            editor.putString("myUid", "");
+            editor.apply();
+
+            chk_signOut = false;
+        }
+        else if(!myUid.equals("")) {
             Intent intent = new Intent(getApplication(), Fragment.class);
             intent.putExtra("myName", myName);
             intent.putExtra("myDept", myDept);
