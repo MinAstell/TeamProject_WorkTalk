@@ -37,13 +37,15 @@ public class UsersList_Adapter extends RecyclerView.Adapter<UsersList_Adapter.Cu
     private ArrayList<UserListsDTO> arrayList;
     private Context context;
     private String myName;
+    private String myUid;
     private String teamUser;
     private String chatRoomPath;
 
-    public UsersList_Adapter(ArrayList<UserListsDTO> arrayList, String myName, Context context) {
+    public UsersList_Adapter(ArrayList<UserListsDTO> arrayList, String myUid, String myName, Context context) {
         this.arrayList = arrayList;
         this.myName = myName;
         this.context = context;
+        this.myUid = myUid;
     }
 
     @NonNull
@@ -126,20 +128,19 @@ public class UsersList_Adapter extends RecyclerView.Adapter<UsersList_Adapter.Cu
                 if(dataSnapshot.getChildrenCount() > 0) {
 
                     chatRoomPath = myName+"_"+teamUser;
-                    showAlert("chatRoomPath" + chatRoomPath);
 
-//                    Intent intent = new Intent(context, TestChatRoom_Read.class);
-//                    intent.putExtra("chatRoomPath", chatRoomPath);
-//                    intent.putExtra("myUid", myUid2);
-//                    intent.putExtra("myName", myName2);
-//                    intent.putExtra("friendName", friendName);
-//                    context.startActivity(intent);
+                    Intent intent = new Intent(context, ChatRoom.class);
+                    intent.putExtra("chatRoomPath", chatRoomPath);
+                    intent.putExtra("myUid", myUid);
+                    intent.putExtra("myName", myName);
+                    intent.putExtra("friendName", teamUser);
+                    context.startActivity(intent);
 
                     return;
                 }
                 else {
 
-                    mDatabase.child("chatRoom").child(teamUser+"_"+myName).addListenerForSingleValueEvent(new ValueEventListener() {
+                    mDatabase.child(teamUser+"_"+myName).addListenerForSingleValueEvent(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -147,14 +148,13 @@ public class UsersList_Adapter extends RecyclerView.Adapter<UsersList_Adapter.Cu
                             if(dataSnapshot.getChildrenCount() > 0) {
 
                                 chatRoomPath = teamUser+"_"+myName;
-                                showAlert("chatRoomPath" + chatRoomPath);
 
-//                                Intent intent = new Intent(context, TestChatRoom_Read.class);
-//                                intent.putExtra("chatRoomPath", chatRoomPath);
-//                                intent.putExtra("myUid", myUid2);
-//                                intent.putExtra("myName", myName2);
-//                                intent.putExtra("friendName", friendName);
-//                                context.startActivity(intent);
+                                Intent intent = new Intent(context, ChatRoom.class);
+                                intent.putExtra("chatRoomPath", chatRoomPath);
+                                intent.putExtra("myUid", myUid);
+                                intent.putExtra("myName", myName);
+                                intent.putExtra("friendName", teamUser);
+                                context.startActivity(intent);
 
                                 return;
                             }
@@ -170,14 +170,13 @@ public class UsersList_Adapter extends RecyclerView.Adapter<UsersList_Adapter.Cu
 
                                 mDatabase.child(myName + "_" + teamUser).push().setValue(map);
                                 chatRoomPath = myName + "_" + teamUser;
-                                showAlert("chatRoomPath" + chatRoomPath);
 
-//                                Intent intent = new Intent(context, TestChatRoom_Read.class);
-//                                intent.putExtra("chatRoomPath", chatRoomPath);
-//                                intent.putExtra("myName", myName2);
-//                                intent.putExtra("myUid", myUid2);
-//                                intent.putExtra("friendName", friendName);
-//                                context.startActivity(intent);
+                                Intent intent = new Intent(context, ChatRoom.class);
+                                intent.putExtra("chatRoomPath", chatRoomPath);
+                                intent.putExtra("myName", myName);
+                                intent.putExtra("myUid", myUid);
+                                intent.putExtra("friendName", teamUser);
+                                context.startActivity(intent);
                             }
                         }
 

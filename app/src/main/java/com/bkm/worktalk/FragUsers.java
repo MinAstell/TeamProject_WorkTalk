@@ -117,7 +117,7 @@ public class FragUsers extends Fragment {
 
                     Log.d("userList", userList.get(0).name);
 
-                    UsersList_Adapter usersListAdapter = new UsersList_Adapter(userList, getMyName(), getContext());
+                    UsersList_Adapter usersListAdapter = new UsersList_Adapter(userList, getMyUid(), getMyName(), getContext());
                     rv_userList.setAdapter(usersListAdapter);
                 }
             }

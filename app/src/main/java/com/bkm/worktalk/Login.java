@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,6 +140,24 @@ public class Login extends AppCompatActivity {
                                         editor.putString("myDept", joinDTO.deptno);
                                         editor.apply();
 
+                                        FirebaseMessaging.getInstance().getToken()
+                                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<String> task) {
+                                                        if (!task.isSuccessful()) {
+                                                            return;
+                                                        }
+
+                                                        // Get new FCM registration token
+                                                        String token = task.getResult();
+
+                                                        Map<String, Object> map = new HashMap<>();
+                                                        map.put("token", token);
+
+                                                        mDatabase.child(myUid).updateChildren(map);
+                                                    }
+                                                });
+
                                         Map<String, Object> map = new HashMap<>();
                                         map.put("pw", pw);
 
@@ -192,12 +211,12 @@ public class Login extends AppCompatActivity {
         alertDialog.show();
     }
     public void chkLoginStatus() {
+
         String myUid = appData.getString("myUid", "");
         String myName = appData.getString("myName", "");
         String myDept = appData.getString("myDept", "");
 
-
-        // else if 숙지하자! if문과는 엄연히 다름.
+        // else if 숙지하자! if와 엄연히 다름.
         if(chk_signOut) {
             SharedPreferences.Editor editor = appData.edit();
 
@@ -207,6 +226,25 @@ public class Login extends AppCompatActivity {
             chk_signOut = false;
         }
         else if(!myUid.equals("")) {
+
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (!task.isSuccessful()) {
+                                return;
+                            }
+
+                            // Get new FCM registration token
+                            String token = task.getResult();
+
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("token", token);
+
+                            mDatabase.child(myUid).updateChildren(map);
+                        }
+                    });
+
             Intent intent = new Intent(getApplication(), Fragment.class);
             intent.putExtra("myName", myName);
             intent.putExtra("myDept", myDept);
