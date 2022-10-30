@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.ktx.Firebase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -286,11 +287,24 @@ public class Join_Find extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
-                                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                                JoinDTO joinDTO = new JoinDTO(email, rePw, name, emp, hp, dept, job);
+                                FirebaseMessaging.getInstance().getToken()
+                                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<String> task) {
+                                                if (!task.isSuccessful()) {
+                                                    return;
+                                                }
 
-                                mDatabase.child(uid).setValue(joinDTO);
+                                                // Get new FCM registration token
+                                                String token = task.getResult();
+
+                                                JoinDTO joinDTO = new JoinDTO(email, rePw, name, emp, hp, dept, job, token);
+
+                                                mDatabase.child(myUid).setValue(joinDTO);
+                                            }
+                                        });
 
                                 showAlert("가입이 완료되었습니다.", 1);
 
