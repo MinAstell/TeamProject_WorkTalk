@@ -40,16 +40,24 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
-            String sendingUser = remoteMessage.getData().get("sendingUser");
+            String friendName = remoteMessage.getData().get("sendingUser");
+            String chatRoomPath = remoteMessage.getData().get("chatRoomPath");
+            String myName = remoteMessage.getData().get("receiver");
+            String myUid = remoteMessage.getData().get("receiverUid");
 
-            sendNotification(title, body, sendingUser);
+            sendNotification(title, body, myName, friendName, chatRoomPath, myUid);
         }
     }
 
-    private void sendNotification(String title, String body, String sendingUser) {
+    private void sendNotification(String title, String body, String myName, String friendName, String chatRoomPath, String myUid) {
 
         // 0. Pending Intent
-        Intent notificationIntent = new Intent(this, Login.class);
+        Intent notificationIntent = new Intent(this, ChatRoom.class);
+        notificationIntent.putExtra("myName", myName);
+        notificationIntent.putExtra("friendName", friendName);
+        notificationIntent.putExtra("chatRoomPath", chatRoomPath);
+        notificationIntent.putExtra("myUid", myUid);
+
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
