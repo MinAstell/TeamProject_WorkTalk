@@ -62,6 +62,7 @@ public class ChatRoom extends AppCompatActivity {
     public String chatRoomPath = "";
     public String myComment;
     public String friendToken = "";
+    public String friendUid = "";
 
     ArrayList<JoinDTO> friendTokenList = new ArrayList<>();
 
@@ -213,6 +214,8 @@ public class ChatRoom extends AppCompatActivity {
                     friendTokenList.clear();
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                        friendUid = snapshot.getKey();
                         JoinDTO joinDTO = snapshot.getValue(JoinDTO.class);
                         friendTokenList.add(joinDTO);
                     }
@@ -229,6 +232,9 @@ public class ChatRoom extends AppCompatActivity {
                     notificationModel.data.title = "보낸 사람 : " + myName;
                     notificationModel.data.body = myComment;
                     notificationModel.data.sendingUser = myName;
+                    notificationModel.data.chatRoomPath = chatRoomPath;
+                    notificationModel.data.receiver = friendName;
+                    notificationModel.data.receiverUid = friendUid;
 
                     RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
 
