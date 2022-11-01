@@ -23,7 +23,8 @@ public class Fragment extends AppCompatActivity {
     private FragUsers fragUsers;
     private FragmentTransaction transaction;
 
-    ImageView iv_project, iv_talk, iv_settings, iv_users;
+    ImageView iv_project, iv_talk, iv_settings;
+    public static ImageView iv_users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,10 @@ public class Fragment extends AppCompatActivity {
                     break;
                 case R.id.iv_users:
                     transaction.replace(R.id.framelayout, fragUsers).commitAllowingStateLoss();
+                    iv_users.setImageResource(R.drawable.users_press);
+                    iv_project.setImageResource(R.drawable.project);
+                    iv_talk.setImageResource(R.drawable.talk);
+                    iv_settings.setImageResource(R.drawable.settings);
                     FragUsers fragUsers = new FragUsers();
                     fragUsers.setMyName(myName);
                     fragUsers.setMyDept(myDept);
