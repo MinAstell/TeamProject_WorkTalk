@@ -30,6 +30,7 @@
         <activity android:name=".CreateProject" />
         <activity android:name=".InsertOnly"/>
         <activity android:name=".ChatRoom"/>
+        <activity android:name=".FragInnerProject"/>
 
         <service android:name=".FirebaseMessagingService"
             android:exported="true"

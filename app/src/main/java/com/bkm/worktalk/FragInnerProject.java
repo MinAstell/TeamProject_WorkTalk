@@ -6,9 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,14 +25,33 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FragInnerProject extends Fragment {
+public class FragInnerProject extends AppCompatActivity {
 
-    @Nullable
+    private TextView tv_innerProjectName;
+    private TextView tv_innerProjectExplain;
+    private ArrayList<ProjectDTO> arrayList;
+    public String projectName = "";
+    public String projectExplain = "";
+
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_frag_innerproject, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_frag_innerproject);
 
-        return view;
+        tv_innerProjectName = (TextView) findViewById(R.id.tv_innerProjectName);
+        tv_innerProjectExplain = (TextView) findViewById(R.id.tv_innerProjectExplain);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        projectName = bundle.getString("projectName");
+        projectExplain = bundle.getString("projectExplain");
+
+        tv_innerProjectName.setText(projectName);
+        tv_innerProjectExplain.setText(projectExplain);
 
     }
 }

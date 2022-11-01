@@ -25,11 +25,31 @@ import java.util.ArrayList;
 
 public class FragProject extends Fragment {
 
+    private static String projectName;
+    private static String projectExplain;
+
+    public static String getProjectName() {
+        return projectName;
+    }
+
+    public static void setProjectName(String projectName) {
+        FragProject.projectName = projectName;
+    }
+
+    public static String getProjectExplain() {
+        return projectExplain;
+    }
+
+    public static void setProjectExplain(String projectExplain) {
+        FragProject.projectExplain = projectExplain;
+    }
+
     private FloatingActionButton fab_project; //플로팅 버튼(프로젝트 생성으로 이동)
     private RecyclerView rv_projectList;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<ProjectDTO> arrayList;
+
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
@@ -42,7 +62,7 @@ public class FragProject extends Fragment {
         rv_projectList.setHasFixedSize(true); // 리사이클러뷰 기존성능 강화
         layoutManager = new LinearLayoutManager(getContext());
         rv_projectList.setLayoutManager(layoutManager);
-        arrayList = new ArrayList<>(); // User 객체를 담을 어레이 리스트 (어댑터쪽으로)
+        arrayList = new ArrayList<>(); // 객체를 담을 어레이 리스트 (어댑터쪽으로)
 
         database = FirebaseDatabase.getInstance(); // 파이어베이스 데이터베이스 연동
         databaseReference = database.getReference("projectList"); // DB 테이블 연결
@@ -64,7 +84,7 @@ public class FragProject extends Fragment {
                 Log.e("Fraglike", String.valueOf(databaseError.toException())); // 에러문 출력
             }
         });
-        adapter = new Project_Adapter(arrayList, getContext());
+        adapter = new Project_Adapter(arrayList, getProjectName(), getProjectExplain(), getContext());
         rv_projectList.setAdapter(adapter); // 리사이클러뷰에 어댑터 연결
 
         fab_project = (FloatingActionButton) view.findViewById(R.id.fab_project);
@@ -80,4 +100,33 @@ public class FragProject extends Fragment {
         return view;
 
     }
+    public void selUserList() {
+        databaseReference.child(getProjectName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getChildrenCount() > 0) {
+                    arrayList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                        ProjectDTO projectDTO = snapshot.getValue(ProjectDTO.class);
+
+                        if(!projectDTO.projectName.equals(getProjectName())) {
+                            arrayList.add(projectDTO);
+                        }
+                    }
+
+                    Log.d("projectName", arrayList.get(0).projectName);
+
+                    Project_Adapter project_adapter = new Project_Adapter(arrayList, getProjectName(), getProjectExplain(), getContext());
+                    rv_projectList.setAdapter(project_adapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }

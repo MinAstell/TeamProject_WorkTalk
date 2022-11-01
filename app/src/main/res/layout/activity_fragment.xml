@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".Fragment">
 
@@ -20,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
-        android:background="#0F265C"
+        android:background="#000000"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -34,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_weight="25"
             android:orientation="vertical"
-            android:paddingVertical="8dp">
+            android:paddingVertical="5dp">
 
             <ImageView
                 android:id="@+id/iv_users"
@@ -50,7 +49,7 @@
             android:layout_height="match_parent"
             android:layout_weight="25"
             android:orientation="vertical"
-            android:paddingVertical="8dp">
+            android:paddingVertical="5dp">
 
             <ImageView
                 android:id="@+id/iv_project"
@@ -66,7 +65,7 @@
             android:layout_height="match_parent"
             android:layout_weight="25"
             android:orientation="vertical"
-            android:paddingVertical="8dp">
+            android:paddingVertical="5dp">
 
             <ImageView
                 android:id="@+id/iv_talk"
@@ -82,7 +81,7 @@
             android:layout_height="match_parent"
             android:layout_weight="25"
             android:orientation="vertical"
-            android:paddingVertical="8dp">
+            android:paddingVertical="5dp">
 
             <ImageView
                 android:id="@+id/iv_settings"
