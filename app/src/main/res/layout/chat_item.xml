@@ -25,7 +25,8 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:gravity="center"
-            android:text="유저네임" />
+            android:text="유저네임"
+            android:textColor="#000000" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,6 +45,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:text="1"
+            android:textColor="#000000"
             android:textSize="21sp" />
 
         <TextView
