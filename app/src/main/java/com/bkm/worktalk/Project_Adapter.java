@@ -1,6 +1,8 @@
 package com.bkm.worktalk;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,17 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Project_Adapter extends RecyclerView.Adapter<Project_Adapter.CustomViewHolder> {
 
@@ -24,8 +35,15 @@ public class Project_Adapter extends RecyclerView.Adapter<Project_Adapter.Custom
     //어댑터에서 액티비티 액션을 가져올 때 context가 필요한데 어댑터에는 context가 없다.
     //선택한 액티비티에 대한 context를 가져올 때 필요하다.
 
-    public Project_Adapter(ArrayList<ProjectDTO> arrayList, Context context) {
+    private String projectName;
+    private String projectExplain;
+
+    public DatabaseReference mDatabase;
+
+    public Project_Adapter(ArrayList<ProjectDTO> arrayList, String projectName, String projectExplain, Context context) {
         this.arrayList = arrayList;
+        this.projectName = projectName;
+        this.projectExplain = projectExplain;
         this.context = context;
     }
 
@@ -35,19 +53,49 @@ public class Project_Adapter extends RecyclerView.Adapter<Project_Adapter.Custom
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_projectlist, parent, false);
         CustomViewHolder holder = new CustomViewHolder(view);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("innerProject");
+
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.tv_ProjectName.setText(arrayList.get(position).getProjectName());
-        holder.tv_projectExplain.setText(String.valueOf(arrayList.get(position).getProjectExplain()));
+        holder.tv_projectExplain.setText(arrayList.get(position).getProjectExplain());
+
+        holder.itemView.setTag(position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                projectName = holder.tv_ProjectName.getText().toString();
+                projectExplain = holder.tv_projectExplain.getText().toString();
+
+                Log.d("projectName, projectExplain", projectName + ", " + projectExplain);
+                clickToInnerProject();
+            }
+        });
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
     public int getItemCount() {
         //삼항 연산자
         return (arrayList != null ? arrayList.size() : 0);
+    }
+
+    public void remove(int position) {
+        try {
+            arrayList.remove(position);
+            notifyItemRemoved(position);  // 새로고침
+        }catch (IndexOutOfBoundsException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -58,15 +106,30 @@ public class Project_Adapter extends RecyclerView.Adapter<Project_Adapter.Custom
             super(itemView);
             this.tv_ProjectName = itemView.findViewById(R.id.tv_ProjectName);
             this.tv_projectExplain = itemView.findViewById(R.id.tv_projectExplain);
-
-            //리싸이클뷰 아이템 클릭으로 프래그먼트 넘어가기===============================================
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(context.getApplicationContext(), "아이템 클릭!", Toast.LENGTH_SHORT).show();
-                }
-            });
         }
+    }
+
+    //리사이클러뷰 클릭시 InnerProject로 이동===========================================================
+    public void clickToInnerProject() {
+
+        mDatabase.child(projectName).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Intent intent = new Intent(context, FragInnerProject.class);
+                intent.putExtra("projectName", projectName);
+                intent.putExtra("projectExplain", projectExplain);
+                context.startActivity(intent);
+
+                return;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
