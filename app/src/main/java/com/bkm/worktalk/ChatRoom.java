@@ -71,8 +71,6 @@ public class ChatRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setHasFixedSize(true);

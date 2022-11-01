@@ -78,8 +78,6 @@ public class Login extends AppCompatActivity {
         ib_all_del1_login = (ImageButton) findViewById(R.id.ib_all_del1_login);
         ib_all_del2_login = (ImageButton) findViewById(R.id.ib_all_del2_login);
 
-        Fragment.iv_users.setImageResource(R.drawable.users_press);
-
         chkLoginStatus();  // 로그인 가버렷!!
 
         btn_transJoin.setOnClickListener(new View.OnClickListener() {
