@@ -41,7 +41,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:tint="#FFFFFF"
                 app:srcCompat="@drawable/users" />
 
         </LinearLayout>
@@ -58,7 +57,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:tint="#FFFFFF"
                 app:srcCompat="@drawable/project" />
 
         </LinearLayout>
@@ -75,7 +73,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:tint="#FFFFFF"
                 app:srcCompat="@drawable/talk" />
 
         </LinearLayout>
@@ -92,7 +89,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:tint="#FFFFFF"
                 app:srcCompat="@drawable/settings" />
 
         </LinearLayout>

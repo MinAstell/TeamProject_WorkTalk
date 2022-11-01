@@ -51,6 +51,8 @@ public class Fragment extends AppCompatActivity {
         iv_settings = (ImageView)findViewById(R.id.iv_settings);
         iv_users = (ImageView)findViewById(R.id.iv_users);
 
+        iv_project.setImageResource(R.drawable.project_press);
+
         findViewById(R.id.iv_project).setOnClickListener(mClick);
         findViewById(R.id.iv_talk).setOnClickListener(mClick);
         findViewById(R.id.iv_settings).setOnClickListener(mClick);
